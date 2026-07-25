@@ -1,8 +1,8 @@
 name: CI
 
 # Pipeline de integração contínua do BeautyOS.
-# Hoje: lint da documentação (docs-as-code) + placeholder de testes.
-# À medida que o backend/frontend/mobile nascerem, novos jobs entram aqui.
+# Jobs: lint da documentação (docs-as-code) + testes do backend (isolamento
+# multi-tenant contra PostgreSQL real, com RLS). Ver docs/testing/testing-strategy.md.
 on:
   push:
     branches: [main]
@@ -24,14 +24,36 @@ jobs:
       - name: Validar docs (links, fences, frontmatter)
         run: python scripts/validate_docs.py
 
-  tests:
-    name: Testes (placeholder)
+  backend-tests:
+    name: Testes do backend (multi-tenant + RLS)
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: beautyos
+          POSTGRES_PASSWORD: beautyos
+          POSTGRES_DB: beautyos
+        ports:
+          - "5432:5432"
+        options: >-
+          --health-cmd "pg_isready -U beautyos"
+          --health-interval 5s --health-timeout 5s --health-retries 10
     steps:
       - uses: actions/checkout@v4
-      # Placeholder até o backend existir. Quando houver testes (pytest/DRF),
-      # substituir por: setup-python -> pip install -r requirements.txt -> pytest.
-      # Falha propositalmente NÃO ocorre aqui ainda; o gate real de testes entra
-      # junto do primeiro módulo (walking skeleton multi-tenant).
-      - name: Nenhum teste ainda
-        run: echo "Sem suíte de testes ainda. Ver docs/testing/testing-strategy.md."
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Instalar dependências
+        working-directory: backend
+        run: pip install -r requirements.txt
+      - name: Criar role de aplicação não-superusuário (RLS real)
+        env:
+          PGPASSWORD: beautyos
+        run: psql -h localhost -U beautyos -d beautyos -f backend/deploy/initdb/01-app-role.sql
+      - name: Rodar testes (pytest)
+        working-directory: backend
+        env:
+          DATABASE_URL: postgres://beautyos_app:beautyos_app@localhost:5432/beautyos
+          DJANGO_SECRET_KEY: ci-secret-de-teste-com-mais-de-32-bytes-ok
+        run: python -m pytest
