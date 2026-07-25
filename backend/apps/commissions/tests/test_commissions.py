@@ -30,7 +30,7 @@ def cenario(db):
             tenant_id=a.id, customer_id=cust.id, professional_id=prof.id,
             service_id=svc.id, starts_at=datetime(2026, 8, 1, 10, tzinfo=timezone.utc),
         )
-    User.objects.create_user(email="dono@a.com", password="senha123", tenant_id=a.id)
+    User.objects.create_user(email="dono@a.com", password="senha123", tenant_id=a.id, role="owner")
     return {"a": a, "prof": prof, "cust": cust, "appt": appt}
 
 
@@ -94,7 +94,7 @@ def test_sem_regra_comissao_zero(cenario):
 def test_isola_regras_por_tenant(cenario):
     a = cenario["a"]
     b = Company.objects.create(name="Salão B")
-    User.objects.create_user(email="dono@b.com", password="senha123", tenant_id=b.id)
+    User.objects.create_user(email="dono@b.com", password="senha123", tenant_id=b.id, role="owner")
     ca = _client("dono@a.com")
     ca.post("/api/v1/commission-rules", {"percent_bps": 3000}, format="json")  # regra padrão do A
     cb = _client("dono@b.com")

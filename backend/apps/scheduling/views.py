@@ -20,6 +20,8 @@ class AppointmentViewSet(
     viewsets.GenericViewSet,
 ):
     serializer_class = AppointmentSerializer
+    # Recepção também agenda (ver matriz RBAC em docs/security/security.md).
+    write_roles = frozenset({"owner", "manager", "reception"})
 
     def get_queryset(self):
         return Appointment.objects.all().order_by("starts_at")

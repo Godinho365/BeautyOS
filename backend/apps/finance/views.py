@@ -39,6 +39,8 @@ class TicketViewSet(
     viewsets.GenericViewSet,
 ):
     serializer_class = TicketSerializer
+    # Recepção também opera comandas (abrir, itens, pagamento, fechar).
+    write_roles = frozenset({"owner", "manager", "reception"})
 
     def get_queryset(self):
         return (

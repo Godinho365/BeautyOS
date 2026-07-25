@@ -16,6 +16,12 @@ versionamento futuro seguirá [SemVer](https://semver.org/lang/pt-BR/).
 ## [Não lançado]
 
 ### Adicionado
+- **RBAC real (papéis + permissões)**: `identity.User.role`
+  (`owner`/`manager`/`professional`/`reception`) + `RoleBasedPermission` (permissão padrão do
+  DRF). ViewSets declaram `read_roles`/`write_roles`; defaults conservadores (ler: todos;
+  escrever: owner/manager). Ex.: recepção agenda/abre comanda/cadastra cliente; profissional só
+  lê catálogo e não vê comissões. Substitui o `IsAuthenticated` genérico. 5 testes.
+  Ver [security.md](docs/security/security.md).
 - **Comando `seed_demo`** (`python manage.py seed_demo`): cria tenant, usuário
   (`demo@beautyos.dev`/`demo12345`), serviços, profissionais, clientes e um agendamento de
   exemplo — idempotente. Destrava o smoke E2E do painel. **Verificado ponta a ponta**: login no

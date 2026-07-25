@@ -19,7 +19,7 @@ def cenario(db):
     with use_tenant(a.id):
         prod = Product.objects.create(tenant_id=a.id, name="Shampoo", quantity=10)
         cust = Customer.objects.create(tenant_id=a.id, name="Cliente A")
-    User.objects.create_user(email="dono@a.com", password="senha123", tenant_id=a.id)
+    User.objects.create_user(email="dono@a.com", password="senha123", tenant_id=a.id, role="owner")
     return {"a": a, "prod": prod, "cust": cust}
 
 
