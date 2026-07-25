@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     # Terceiros
     "rest_framework",
     "corsheaders",
+    "drf_spectacular",
     # Módulos BeautyOS (bounded contexts) — ver docs/architecture/modules.md
     "apps.common",
     "apps.tenant",
@@ -92,7 +93,24 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
         "apps.common.permissions.RoleBasedPermission",
     ),
-    "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.openapi.AutoSchema",
+    # Schema OpenAPI via drf-spectacular.
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    # Paginação padrão (envelope {count,next,previous,results}). Ver api_guidelines.md.
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 50,
+    # Rate limiting por usuário/anônimo (ajustar por ambiente).
+    "DEFAULT_THROTTLE_CLASSES": (
+        "rest_framework.throttling.UserRateThrottle",
+        "rest_framework.throttling.AnonRateThrottle",
+    ),
+    "DEFAULT_THROTTLE_RATES": {"user": "1000/hour", "anon": "60/hour"},
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "BeautyOS API",
+    "DESCRIPTION": "API do BeautyOS — SaaS de gestão do mercado da beleza.",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
 
 SIMPLE_JWT = {

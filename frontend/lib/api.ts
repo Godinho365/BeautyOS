@@ -39,8 +39,15 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   return (await res.json()) as T;
 }
 
+type Paginated<T> = { count: number; next: string | null; previous: string | null; results: T[] };
+
 export const api = {
   get: <T>(path: string) => request<T>(path),
+  // Desempacota o envelope de paginação da API ({results}) e devolve o array.
+  list: async <T>(path: string): Promise<T[]> => {
+    const page = await request<Paginated<T>>(path);
+    return page.results;
+  },
   post: <T>(path: string, body: unknown) =>
     request<T>(path, { method: "POST", body: JSON.stringify(body) }),
 };

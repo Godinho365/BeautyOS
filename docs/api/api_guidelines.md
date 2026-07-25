@@ -66,6 +66,13 @@ retrabalho em todos os clientes ([overview](../architecture/overview.md)).
 - Resposta inclui `data` e `page` (`next_cursor`, `has_more`).
 - Filtros por query param explícito; ordenação via `?sort=-starts_at`.
 
+> [!note] Implementação de referência (endurecimento)
+> **OpenAPI:** contrato em `GET /api/schema` e Swagger UI em `GET /api/docs` (drf-spectacular).
+> **Paginação:** hoje `PageNumberPagination` (`PAGE_SIZE=50`), envelope
+> `{count, next, previous, results}` — `?page=N`. Migração para **cursor** fica para o alto
+> volume (evolução). **Rate limiting:** `UserRateThrottle`/`AnonRateThrottle` (DRF), `429` ao
+> exceder. Config em `backend/config/settings.py` (`REST_FRAMEWORK`).
+
 ## Idempotência
 
 - `POST` que cria recurso aceita header `Idempotency-Key`; repetição retorna o mesmo resultado

@@ -126,5 +126,5 @@ def test_isola_agendamentos_por_tenant(cenario):
     cb = _client("dono@b.com")
     assert _book(ca, cenario["cust_a"], cenario["prof_a"], cenario["svc_a"], 10).status_code == 201
     assert _book(cb, cenario["cust_b"], cenario["prof_b"], cenario["svc_b"], 10).status_code == 201
-    assert len(ca.get("/api/v1/appointments").data) == 1
-    assert len(cb.get("/api/v1/appointments").data) == 1
+    assert len(ca.get("/api/v1/appointments").data["results"]) == 1
+    assert len(cb.get("/api/v1/appointments").data["results"]) == 1

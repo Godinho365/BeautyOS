@@ -42,8 +42,8 @@ def test_rls_isola_professionals_no_banco(cenario):
 
 @pytest.mark.django_db(transaction=True)
 def test_api_isola_professionals_por_tenant(cenario):
-    assert {p["name"] for p in _client("dono@a.com").get("/api/v1/professionals").data} == {"Ana"}
-    assert {p["name"] for p in _client("dono@b.com").get("/api/v1/professionals").data} == {"Bruno"}
+    assert {p["name"] for p in _client("dono@a.com").get("/api/v1/professionals").data["results"]} == {"Ana"}
+    assert {p["name"] for p in _client("dono@b.com").get("/api/v1/professionals").data["results"]} == {"Bruno"}
 
 
 @pytest.mark.django_db(transaction=True)
@@ -56,4 +56,4 @@ def test_api_cria_professional_no_tenant_correto(cenario):
         format="json",
     )
     assert r.status_code == 201, r.content
-    assert {p["name"] for p in client.get("/api/v1/professionals").data} == {"Ana", "Carla"}
+    assert {p["name"] for p in client.get("/api/v1/professionals").data["results"]} == {"Ana", "Carla"}

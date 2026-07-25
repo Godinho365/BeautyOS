@@ -25,8 +25,8 @@ export default function DashboardPage() {
     setError("");
     try {
       const [svc, appts] = await Promise.all([
-        api.get<Service[]>("/services"),
-        api.get<Appointment[]>("/appointments"),
+        api.list<Service>("/services"),
+        api.list<Appointment>("/appointments"),
       ]);
       setServices(svc);
       setAppointments(appts);

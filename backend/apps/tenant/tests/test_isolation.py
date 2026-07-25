@@ -61,7 +61,7 @@ def test_api_isola_branches_por_tenant(two_companies):
         client.credentials(HTTP_AUTHORIZATION=f"Bearer {r.data['access']}")
         r = client.get("/api/v1/branches")
         assert r.status_code == 200, r.content
-        return {item["name"] for item in r.data}
+        return {item["name"] for item in r.data["results"]}
 
     assert branches_do("dono@salaoa.com") == {"Filial A"}
     assert branches_do("dono@salaob.com") == {"Filial B"}
