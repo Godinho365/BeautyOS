@@ -52,6 +52,7 @@ graph TB
 - 📈 **Observabilidade** — [Logs, métricas, tracing, SLOs](observability/observability.md)
 - 🧪 **Testes** — [Estratégia de testes](testing/testing-strategy.md)
 - 🚀 **DevOps** — [Deploy & CI/CD](devops/deploy.md)
+- 💻 **Frontend** — [Painel Web (Next.js)](frontend/overview.md)
 - 🤖 **IA** — [Copilot / IA](ai/copilot.md)
 - 🧭 **Decisões** — [Índice de ADRs](decisions/README.md)
 

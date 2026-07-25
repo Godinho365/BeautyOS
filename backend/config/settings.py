@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Terceiros
     "rest_framework",
+    "corsheaders",
     # Módulos BeautyOS (bounded contexts) — ver docs/architecture/modules.md
     "apps.common",
     "apps.tenant",
@@ -45,9 +46,15 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "corsheaders.middleware.CorsMiddleware",  # antes do CommonMiddleware
     "django.middleware.common.CommonMiddleware",
     "apps.common.middleware.TenantMiddleware",  # define app.tenant_id na transação (RLS)
 ]
+
+# CORS: origens do painel web autorizadas a chamar a API (ver docs/frontend/overview.md).
+CORS_ALLOWED_ORIGINS = env.list(
+    "CORS_ALLOWED_ORIGINS", default=["http://localhost:3000"]
+)
 
 ROOT_URLCONF = "config.urls"
 WSGI_APPLICATION = "config.wsgi.application"
