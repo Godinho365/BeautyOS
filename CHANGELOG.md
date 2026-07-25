@@ -16,6 +16,10 @@ versionamento futuro seguirá [SemVer](https://semver.org/lang/pt-BR/).
 ## [Não lançado]
 
 ### Adicionado
+- **Comando `seed_demo`** (`python manage.py seed_demo`): cria tenant, usuário
+  (`demo@beautyos.dev`/`demo12345`), serviços, profissionais, clientes e um agendamento de
+  exemplo — idempotente. Destrava o smoke E2E do painel. **Verificado ponta a ponta**: login no
+  painel Next.js → dashboard exibindo os dados semeados (browser → API JWT/CORS → Django → RLS).
 - **Painel Web (Next.js)** em `frontend/`: app App Router + TypeScript com **login JWT** e
   dashboard que consome `/api/v1` (lista serviços/agendamentos, cria serviço). Cliente HTTP
   central (`lib/api.ts`) com Bearer + tratamento de 401. Backend ganha **CORS**
