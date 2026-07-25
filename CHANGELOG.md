@@ -16,9 +16,16 @@ versionamento futuro seguirá [SemVer](https://semver.org/lang/pt-BR/).
 ## [Não lançado]
 
 ### Adicionado
+- **Módulo `staff` (Profissionais)**: entidade `Professional` isolada por tenant (RLS), endpoints
+  `/api/v1/professionals` (listar/criar/detalhar) e 3 testes de isolamento.
 - **Módulo `catalog` (Catálogo de Serviços)**: entidade `Service` (duração + preço em centavos)
   isolada por tenant (RLS), endpoints `/api/v1/services` (listar/criar/detalhar) e 3 testes de
   isolamento. Segue o padrão do walking skeleton. Ver [modules.md](docs/architecture/modules.md).
+
+### Alterado
+- **API v1 usa um único `DefaultRouter` compartilhado** (cada módulo contribui via
+  `register(router)` em `routes.py`), eliminando o `RemovedInDjango60Warning` de conversor de
+  sufixo registrado em duplicidade.
 - **Backend — walking skeleton multi-tenant** (`backend/`): monólito modular Django+DRF com
   módulos `identity` (JWT) e `tenant` (Company + Branch). Isolamento por `tenant_id` + **RLS**
   provado ponta a ponta contra PostgreSQL, com role de aplicação não-superusuário
