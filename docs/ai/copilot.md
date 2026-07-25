@@ -37,6 +37,14 @@ IA é o principal diferencial do produto ([visão](../product/vision.md)). O mó
 | **Agentes/automações** | Tarefas como reengajar clientes inativos, sugerir reposição de estoque. |
 | **Insights** | Alertas proativos (queda de recompra, horários ociosos). |
 
+## Implementação de referência (baseline determinístico)
+
+O módulo `ai` já existe como um **Copilot determinístico**, sem LLM: `GET /api/v1/ai/insights`
+(`apps/ai/services.py::compute_insights`) agrega dados dos módulos **pelos contratos públicos**
+(`finance`, `scheduling`, `inventory`, `crm`) e devolve métricas do dia + sugestões fundamentadas.
+É a linha de base e o **guardrail** (respostas ancoradas nos números do tenant, zero alucinação)
+sobre a qual a evolução com **LLM/RAG** será construída. Restrito a papéis de gestão (RBAC).
+
 ## Guardrails (obrigatórios)
 
 - **Isolamento:** todo contexto e recuperação de dados é escopado por `tenant_id`

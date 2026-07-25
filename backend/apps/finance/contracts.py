@@ -8,7 +8,10 @@ from __future__ import annotations
 import uuid
 from dataclasses import dataclass
 
-from .models import TicketItem
+from django.db.models import Sum
+from django.utils import timezone
+
+from .models import Ticket, TicketItem
 
 
 @dataclass(frozen=True)
@@ -25,3 +28,14 @@ def get_product_lines(tenant_id: uuid.UUID, ticket_id: uuid.UUID) -> list[Produc
         .values_list("product_id", "quantity")
     )
     return [ProductLine(product_id=pid, quantity=qty) for pid, qty in rows]
+
+
+def revenue_today_cents(tenant_id: uuid.UUID) -> int:
+    """Soma (centavos) das comandas fechadas hoje."""
+    today = timezone.localdate()
+    agg = (
+        Ticket.all_tenants
+        .filter(tenant_id=tenant_id, status=Ticket.Status.CLOSED, closed_at__date=today)
+        .aggregate(total=Sum("total_cents"))
+    )
+    return agg["total"] or 0

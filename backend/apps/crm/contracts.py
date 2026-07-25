@@ -13,3 +13,8 @@ from .models import Customer
 def customer_exists(tenant_id: uuid.UUID, customer_id: uuid.UUID) -> bool:
     """True se o cliente existe e pertence ao tenant."""
     return Customer.all_tenants.filter(tenant_id=tenant_id, id=customer_id).exists()
+
+
+def customers_count(tenant_id: uuid.UUID) -> int:
+    """Total de clientes do tenant."""
+    return Customer.all_tenants.filter(tenant_id=tenant_id).count()

@@ -7,6 +7,8 @@ from __future__ import annotations
 
 import uuid
 
+from django.utils import timezone
+
 from .models import Appointment
 
 
@@ -23,3 +25,11 @@ def get_professional_id(tenant_id: uuid.UUID, appointment_id: uuid.UUID) -> uuid
         .values_list("professional_id", flat=True)
         .first()
     )
+
+
+def appointments_today_count(tenant_id: uuid.UUID) -> int:
+    """Quantidade de agendamentos ativos de hoje."""
+    today = timezone.localdate()
+    return Appointment.all_tenants.filter(
+        tenant_id=tenant_id, status=Appointment.Status.BOOKED, starts_at__date=today
+    ).count()
