@@ -38,5 +38,5 @@ def test_rls_isola_customers_no_banco(cenario):
 
 @pytest.mark.django_db(transaction=True)
 def test_api_isola_customers_por_tenant(cenario):
-    assert {c["name"] for c in _client("dono@a.com").get("/api/v1/customers").data} == {"Cliente A"}
-    assert {c["name"] for c in _client("dono@b.com").get("/api/v1/customers").data} == {"Cliente B"}
+    assert {c["name"] for c in _client("dono@a.com").get("/api/v1/customers").data["results"]} == {"Cliente A"}
+    assert {c["name"] for c in _client("dono@b.com").get("/api/v1/customers").data["results"]} == {"Cliente B"}

@@ -16,6 +16,11 @@ versionamento futuro seguirá [SemVer](https://semver.org/lang/pt-BR/).
 ## [Não lançado]
 
 ### Adicionado
+- **Endurecimento da API**: **OpenAPI** (drf-spectacular) em `/api/schema` + Swagger UI em
+  `/api/docs`; **paginação** padrão (`PageNumberPagination`, `PAGE_SIZE=50`, envelope
+  `{count,next,previous,results}`); **rate limiting** (DRF throttling, `429`). Frontend passa a
+  desempacotar o envelope (`api.list`); testes ajustados. Throttle desabilitado nos testes via
+  `conftest.py`. Ver [api_guidelines.md](docs/api/api_guidelines.md).
 - **RBAC real (papéis + permissões)**: `identity.User.role`
   (`owner`/`manager`/`professional`/`reception`) + `RoleBasedPermission` (permissão padrão do
   DRF). ViewSets declaram `read_roles`/`write_roles`; defaults conservadores (ler: todos;

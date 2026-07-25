@@ -98,4 +98,4 @@ def test_isola_regras_por_tenant(cenario):
     ca = _client("dono@a.com")
     ca.post("/api/v1/commission-rules", {"percent_bps": 3000}, format="json")  # regra padrão do A
     cb = _client("dono@b.com")
-    assert len(cb.get("/api/v1/commission-rules").data) == 0  # B não vê a regra de A
+    assert len(cb.get("/api/v1/commission-rules").data["results"]) == 0  # B não vê a regra de A

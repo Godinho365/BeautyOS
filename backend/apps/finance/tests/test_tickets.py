@@ -103,5 +103,5 @@ def test_isola_tickets_por_tenant(cenario):
     cb = _client("dono@b.com")
     _open(ca, cenario["ca"])
     _open(cb, cenario["cb"])
-    assert len(ca.get("/api/v1/tickets").data) == 1
-    assert len(cb.get("/api/v1/tickets").data) == 1
+    assert len(ca.get("/api/v1/tickets").data["results"]) == 1
+    assert len(cb.get("/api/v1/tickets").data["results"]) == 1

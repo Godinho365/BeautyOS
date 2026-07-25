@@ -43,8 +43,8 @@ def test_rls_isola_services_no_banco(companies_com_usuarios):
 
 @pytest.mark.django_db(transaction=True)
 def test_api_lista_services_isolado_por_tenant(companies_com_usuarios):
-    assert {s["name"] for s in _client_para("dono@a.com").get("/api/v1/services").data} == {"Corte A"}
-    assert {s["name"] for s in _client_para("dono@b.com").get("/api/v1/services").data} == {"Corte B"}
+    assert {s["name"] for s in _client_para("dono@a.com").get("/api/v1/services").data["results"]} == {"Corte A"}
+    assert {s["name"] for s in _client_para("dono@b.com").get("/api/v1/services").data["results"]} == {"Corte B"}
 
 
 @pytest.mark.django_db(transaction=True)
@@ -58,7 +58,7 @@ def test_api_cria_service_no_tenant_correto(companies_com_usuarios):
     )
     assert r.status_code == 201, r.content
     # O serviço criado pertence ao tenant A e aparece só para A.
-    names = {s["name"] for s in client.get("/api/v1/services").data}
+    names = {s["name"] for s in client.get("/api/v1/services").data["results"]}
     assert names == {"Corte A", "Barba"}
     with use_tenant(a.id):
         assert Service.objects.get(name="Barba").tenant_id == a.id
