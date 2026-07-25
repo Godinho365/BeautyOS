@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "apps.inventory",
     "apps.commissions",
     "apps.marketing",
+    "apps.ai",
     "apps.notifications",
 ]
 
