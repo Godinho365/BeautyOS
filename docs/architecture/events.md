@@ -86,7 +86,10 @@ O Outbox está implementado e **testado** (booking → outbox → relay → noti
   (útil em dev/CI e para acionar manualmente).
 - Produtores: `scheduling.services.book_appointment` grava `AppointmentBooked`;
   `finance.services.close_ticket` grava `TicketClosed` (consumidores futuros: estoque, comissões).
-- Consumidor: `notifications.handlers.on_appointment_booked` (idempotente por `event_id`).
+- Consumidores: `notifications.handlers.on_appointment_booked` (confirma agendamento);
+  `inventory.handlers.on_ticket_closed` (baixa estoque dos produtos vendidos);
+  `commissions.handlers.on_ticket_closed` (gera comissão do profissional) — todos idempotentes
+  por `event_id`. `TicketClosed` tem **dois consumidores**, demonstrando fan-out do evento.
 
 ## Boas práticas
 

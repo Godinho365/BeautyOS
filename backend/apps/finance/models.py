@@ -40,6 +40,7 @@ class TicketItem(TenantScopedModel):
     ticket = models.ForeignKey(Ticket, related_name="items", on_delete=models.CASCADE)
     description = models.CharField(max_length=200)
     service_id = models.UUIDField(null=True, blank=True)  # referência ao catalog (por ID)
+    product_id = models.UUIDField(null=True, blank=True)  # referência ao inventory (por ID)
     quantity = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1)])
     unit_price_cents = models.BigIntegerField(validators=[MinValueValidator(0)])
 

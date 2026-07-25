@@ -20,6 +20,16 @@ versionamento futuro seguirá [SemVer](https://semver.org/lang/pt-BR/).
   tarefa `apps.common.tasks.process_outbox` agendada pelo **Celery beat** (a cada 10s). Adiciona
   serviços `redis` e `worker` ao `docker-compose.yml`. O comando `process_outbox` permanece para
   dev/CI. Ver [events.md](docs/architecture/events.md) e [deploy.md](docs/devops/deploy.md).
+- **Módulo `commissions` (Comissões)**: `CommissionRule` (percentual em bps, por profissional
+  ou padrão do tenant) + `Commission` (RLS). **Consome `TicketClosed`** e calcula a comissão do
+  profissional do atendimento — idempotente por `source_event_id`. Endpoints
+  `/api/v1/commission-rules` e `/api/v1/commissions`. `TicketClosed` passa a ter **dois
+  consumidores** (estoque + comissões); payload ganha `appointment_id` e
+  `scheduling.contracts.get_professional_id`.
+- **Módulo `inventory` (Estoque)**: `Product` + `StockMovement` (RLS). Ajuste de estoque com
+  invariante de saldo não-negativo (`/api/v1/products` + action `adjust`). **Consome `TicketClosed`**
+  (`inventory.handlers.on_ticket_closed`) dando baixa nos produtos vendidos — idempotente por
+  `source_event_id`. Adiciona `product_id` ao `TicketItem` (finance) + `finance.contracts.get_product_lines`.
 - **Módulo `finance` (Comanda/Pagamento)**: `Ticket` + `TicketItem` + `Payment` (RLS).
   Use cases `open/add_item/register_payment/close_ticket` com invariantes reais (comanda
   fechada é imutável; só fecha com total > 0 e paga >= total). Emite `TicketClosed` via
