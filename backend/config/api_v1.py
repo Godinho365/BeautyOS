@@ -9,6 +9,7 @@ from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
 from apps.catalog.routes import register as register_catalog
+from apps.commissions.routes import register as register_commissions
 from apps.crm.routes import register as register_crm
 from apps.finance.routes import register as register_finance
 from apps.inventory.routes import register as register_inventory
@@ -25,6 +26,7 @@ register_crm(router)
 register_scheduling(router)
 register_finance(router)
 register_inventory(router)
+register_commissions(router)
 register_notifications(router)
 
 urlpatterns = [

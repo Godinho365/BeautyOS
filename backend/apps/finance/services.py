@@ -105,6 +105,7 @@ def close_ticket(*, tenant_id: uuid.UUID, ticket_id: uuid.UUID) -> Ticket:
             {
                 "ticket_id": str(ticket.id),
                 "customer_id": str(ticket.customer_id),
+                "appointment_id": str(ticket.appointment_id) if ticket.appointment_id else None,
                 "total_cents": ticket.total_cents,
             },
             tenant_id=tenant_id,

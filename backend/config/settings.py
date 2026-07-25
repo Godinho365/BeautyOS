@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "apps.scheduling",
     "apps.finance",
     "apps.inventory",
+    "apps.commissions",
     "apps.notifications",
 ]
 
