@@ -8,4 +8,5 @@ from django.urls import include, path
 urlpatterns = [
     path("auth/", include("apps.identity.urls")),
     path("", include("apps.tenant.urls")),
+    path("", include("apps.catalog.urls")),
 ]

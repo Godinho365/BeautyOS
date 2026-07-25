@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "apps.common",
     "apps.tenant",
     "apps.identity",
+    "apps.catalog",
 ]
 
 MIDDLEWARE = [
