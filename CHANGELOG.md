@@ -26,6 +26,12 @@ versionamento futuro seguirá [SemVer](https://semver.org/lang/pt-BR/).
   (RLS). **Consome `TicketClosed`** creditando pontos (1 ponto/real), idempotente. `TicketClosed`
   passa a ter **três consumidores** (estoque, comissões, fidelidade). Endpoints `/api/v1/campaigns`
   e `/api/v1/loyalty-accounts` (leitura restrita a gestão via RBAC).
+- **Módulo `ai` (Copilot) — Fase 3**: `GET /api/v1/ai/insights` agrega dados de `finance`,
+  `scheduling`, `inventory` e `crm` (via contratos públicos) e devolve métricas do dia +
+  sugestões **determinísticas** (baseline sem LLM, ancorado nos dados = guardrail). Restrito a
+  gestão (RBAC). Novos contratos: `finance.revenue_today_cents`,
+  `scheduling.appointments_today_count`, `inventory.low_stock_count`, `crm.customers_count`.
+  2 testes. Ver [copilot.md](docs/ai/copilot.md).
 - **Endurecimento da API**: **OpenAPI** (drf-spectacular) em `/api/schema` + Swagger UI em
   `/api/docs`; **paginação** padrão (`PageNumberPagination`, `PAGE_SIZE=50`, envelope
   `{count,next,previous,results}`); **rate limiting** (DRF throttling, `429`). Frontend passa a
