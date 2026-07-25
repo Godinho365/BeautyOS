@@ -33,6 +33,8 @@ OWASP, LGPD e 12-Factor App.
 ```
 .
 ├── README.md                 # você está aqui
+├── backend/                  # aplicação Django (monólito modular) — ver backend/README.md
+├── docker-compose.yml        # ambiente local (Django + PostgreSQL)
 ├── docs/                     # documentação de engenharia (SSOT) — ver docs/README.md
 │   ├── product/              # visão de produto
 │   ├── architecture/         # arquitetura, módulos, multi-tenant, domínio, eventos
@@ -46,6 +48,13 @@ OWASP, LGPD e 12-Factor App.
 │   └── decisions/            # ADRs (Architecture Decision Records)
 └── .claude/                  # contexto operacional do Claude Code (skills, prompts, checklists)
 ```
+
+## Rodando o backend
+
+```bash
+DB_PORT=5544 BACKEND_PORT=8090 docker compose up --build
+```
+Detalhes, fluxo E2E e testes em [backend/README.md](backend/README.md).
 
 ## Contribuindo
 

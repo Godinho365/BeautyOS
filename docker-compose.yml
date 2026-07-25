@@ -1,0 +1,45 @@
+# Ambiente local do BeautyOS (walking skeleton).
+# Sobe PostgreSQL + backend Django. Ver docs/devops/deploy.md.
+#
+# Portas do host são configuráveis (evita conflito com outros serviços locais):
+#   DB_PORT (default 5432) e BACKEND_PORT (default 8000).
+#   Ex.: DB_PORT=5544 BACKEND_PORT=8080 docker compose up
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: beautyos
+      POSTGRES_PASSWORD: beautyos
+      POSTGRES_DB: beautyos
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      # Cria o role de aplicação NÃO-superusuário (RLS real). Ver ADR-0003.
+      - ./backend/deploy/initdb:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U beautyos"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    environment:
+      DJANGO_DEBUG: "true"
+      DJANGO_SECRET_KEY: dev-inseguro-troque-em-producao
+      # Conecta como o role de APLICAÇÃO (não-superusuário), para a RLS valer.
+      DATABASE_URL: postgres://beautyos_app:beautyos_app@db:5432/beautyos
+    volumes:
+      - ./backend:/app
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  db_data:

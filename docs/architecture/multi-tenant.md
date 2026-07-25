@@ -89,6 +89,22 @@ with connection.cursor() as cur:
     cur.execute("SET LOCAL app.tenant_id = %s", [request.tenant_id])
 ```
 
+## Implementação de referência
+
+O walking skeleton implementa e **testa** esta estratégia (isolamento provado ponta a ponta
+contra PostgreSQL):
+
+- `backend/apps/common/tenant_context.py` — define `app.tenant_id` via `set_config(..., true)`.
+- `backend/apps/common/middleware.py` — resolve o tenant do JWT e abre a transação da requisição.
+- `backend/apps/common/rls.py` — habilita RLS + política (`FORCE ROW LEVEL SECURITY`).
+- `backend/deploy/initdb/01-app-role.sql` — cria o role de aplicação `beautyos_app`.
+
+> [!danger] RLS exige role NÃO-superusuário
+> Superusuários e roles com `BYPASSRLS` **ignoram RLS**. A aplicação **deve** conectar como um
+> role comum (`NOSUPERUSER`, `NOBYPASSRLS`). Como o app é dono das tabelas, usamos
+> `FORCE ROW LEVEL SECURITY` para a política valer inclusive para o dono. Ver
+> [ADR-0003](../decisions/0003-tenancy-shared-db-rls.md).
+
 ## Boas práticas
 
 - `tenant_id` é **sempre** a primeira coluna de índices compostos.

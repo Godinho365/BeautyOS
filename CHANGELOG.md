@@ -16,6 +16,12 @@ versionamento futuro seguirá [SemVer](https://semver.org/lang/pt-BR/).
 ## [Não lançado]
 
 ### Adicionado
+- **Backend — walking skeleton multi-tenant** (`backend/`): monólito modular Django+DRF com
+  módulos `identity` (JWT) e `tenant` (Company + Branch). Isolamento por `tenant_id` + **RLS**
+  provado ponta a ponta contra PostgreSQL, com role de aplicação não-superusuário
+  (`beautyos_app`). Inclui `docker-compose.yml`, `Dockerfile` e job de CI `backend-tests`
+  (Postgres + pytest). Ver [backend/README.md](backend/README.md).
+
 - Fundação **docs-as-code**: [padrão de documentação](docs/CONTRIBUTING-DOCS.md),
   [índice do Vault](docs/README.md) e [glossário](docs/glossary.md).
 - **Governança**: [Engineering Constitution](CLAUDE.md) e [Definition of Done](DEFINITION_OF_DONE.md).
