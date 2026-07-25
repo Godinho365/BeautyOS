@@ -39,12 +39,23 @@ class UserManager(BaseUserManager):
         return self._create(email, password, **extra)
 
 
+class Role(models.TextChoices):
+    """Papéis dentro da Empresa (RBAC). Ver docs/security/security.md."""
+
+    OWNER = "owner", "Dono"
+    MANAGER = "manager", "Gestor"
+    PROFESSIONAL = "professional", "Profissional"
+    RECEPTION = "reception", "Recepção"
+
+
 class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(unique=True)
     # Empresa (tenant) à qual o usuário pertence. Nulo apenas para superusuários
     # de plataforma. Ver docs/architecture/multi-tenant.md.
     tenant_id = models.UUIDField(null=True, blank=True, db_index=True)
+    # Papel do usuário na Empresa (RBAC). Default conservador: recepção.
+    role = models.CharField(max_length=20, choices=Role.choices, default=Role.RECEPTION)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)

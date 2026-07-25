@@ -20,8 +20,8 @@ def companies_com_usuarios(db):
         Service.objects.create(tenant_id=a.id, name="Corte A", duration_minutes=30, price_cents=5000)
     with use_tenant(b.id):
         Service.objects.create(tenant_id=b.id, name="Corte B", duration_minutes=45, price_cents=7000)
-    User.objects.create_user(email="dono@a.com", password="senha123", tenant_id=a.id)
-    User.objects.create_user(email="dono@b.com", password="senha123", tenant_id=b.id)
+    User.objects.create_user(email="dono@a.com", password="senha123", tenant_id=a.id, role="owner")
+    User.objects.create_user(email="dono@b.com", password="senha123", tenant_id=b.id, role="owner")
     return a, b
 
 

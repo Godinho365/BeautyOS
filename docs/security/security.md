@@ -52,6 +52,13 @@ em Empresas diferentes). Matriz base (exemplo, não exaustiva):
 > `C=criar R=ler U=atualizar D=excluir`. A matriz completa e versionada vive junto ao módulo
 > `tenant`; esta tabela é o contrato de referência.
 
+> [!note] Implementação de referência (RBAC)
+> O papel do usuário fica em `identity.User.role` (`owner`/`manager`/`professional`/`reception`).
+> A autorização é aplicada por `apps/common/permissions.py::RoleBasedPermission` (permissão
+> padrão do DRF). Cada ViewSet declara `read_roles`/`write_roles`; sem declaração valem os
+> defaults conservadores (leitura: todos os papéis; escrita: `owner`/`manager`). Verificação
+> **sempre no servidor**.
+
 ## Proteção de dados & LGPD
 
 - **Bases legais** e finalidade documentadas por tipo de dado (cliente final, profissional).

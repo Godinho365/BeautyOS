@@ -36,11 +36,13 @@ class Command(BaseCommand):
         self.stdout.write(("Empresa criada: " if created else "Empresa existente: ") + str(company.id))
 
         user, u_created = User.objects.get_or_create(
-            email=DEMO_EMAIL, defaults={"tenant_id": company.id, "is_staff": True}
+            email=DEMO_EMAIL,
+            defaults={"tenant_id": company.id, "is_staff": True, "role": "owner"},
         )
         if u_created:
             user.set_password(DEMO_PASSWORD)
             user.tenant_id = company.id
+            user.role = "owner"
             user.save()
         self.stdout.write(("Usuário criado: " if u_created else "Usuário existente: ") + DEMO_EMAIL)
 

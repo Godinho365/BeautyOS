@@ -14,6 +14,8 @@ class CustomerViewSet(
     viewsets.GenericViewSet,
 ):
     serializer_class = CustomerSerializer
+    # Recepção cadastra clientes.
+    write_roles = frozenset({"owner", "manager", "reception"})
 
     def get_queryset(self):
         return Customer.objects.all().order_by("name")

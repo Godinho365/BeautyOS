@@ -17,6 +17,7 @@ class CommissionRuleViewSet(
     viewsets.GenericViewSet,
 ):
     serializer_class = CommissionRuleSerializer
+    read_roles = frozenset({"owner", "manager"})
 
     def get_queryset(self):
         return CommissionRule.objects.all().order_by("professional_id")
@@ -31,6 +32,7 @@ class CommissionViewSet(
     viewsets.GenericViewSet,
 ):
     serializer_class = CommissionSerializer
+    read_roles = frozenset({"owner", "manager"})
 
     def get_queryset(self):
         return Commission.objects.all().order_by("-created_at")
