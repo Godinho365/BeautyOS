@@ -27,6 +27,21 @@ modular ([overview](../architecture/overview.md)).
 - **CI:** build, testes ([testing](../testing/testing-strategy.md)), lint e verificação de segurança.
 - **CD:** promover artefato imutável entre ambientes com migrações controladas.
 
+## Processos em execução
+
+O ambiente local (`docker-compose.yml`) sobe os processos que também existem em produção:
+
+| Processo | Comando | Papel |
+|---|---|---|
+| `backend` | `gunicorn` / `runserver` | API HTTP. |
+| `worker` | `celery -A config worker --beat` | Relay assíncrono do Outbox ([events](../architecture/events.md)). |
+| `db` | PostgreSQL | Dados + RLS. |
+| `redis` | Redis | Broker do Celery / cache. |
+
+> Em produção, **beat** (agendador) e **worker** costumam ser processos separados; no dev usamos
+> `--beat` embutido por simplicidade. Portas do host são configuráveis (`DB_PORT`, `BACKEND_PORT`,
+> `REDIS_PORT`).
+
 ## Ambientes
 
 | Ambiente | Propósito | Dados |
