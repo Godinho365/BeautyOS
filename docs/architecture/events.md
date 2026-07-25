@@ -82,7 +82,8 @@ O Outbox está implementado e **testado** (booking → outbox → relay → noti
 - `backend/apps/common/events.py` — registro de handlers (`subscribe`/`dispatch`) in-process.
 - `backend/apps/common/management/commands/process_outbox.py` — relay como comando (vira tarefa
   Celery em produção).
-- Produtor: `scheduling.services.book_appointment` grava `AppointmentBooked`.
+- Produtores: `scheduling.services.book_appointment` grava `AppointmentBooked`;
+  `finance.services.close_ticket` grava `TicketClosed` (consumidores futuros: estoque, comissões).
 - Consumidor: `notifications.handlers.on_appointment_booked` (idempotente por `event_id`).
 
 ## Boas práticas

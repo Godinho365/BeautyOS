@@ -16,6 +16,11 @@ versionamento futuro seguirá [SemVer](https://semver.org/lang/pt-BR/).
 ## [Não lançado]
 
 ### Adicionado
+- **Módulo `finance` (Comanda/Pagamento)**: `Ticket` + `TicketItem` + `Payment` (RLS).
+  Use cases `open/add_item/register_payment/close_ticket` com invariantes reais (comanda
+  fechada é imutável; só fecha com total > 0 e paga >= total). Emite `TicketClosed` via
+  Outbox (consumidores futuros: estoque, comissões). Endpoints `/api/v1/tickets`
+  (+ actions `items`, `payments`, `close`). 6 testes contra Postgres.
 - **Módulo `crm` (Clientes finais)**: entidade `Customer` isolada por tenant (RLS), endpoints
   `/api/v1/customers`. O `Appointment` passa a referenciar `customer_id` real (via
   `crm.contracts`), substituindo o `customer_name` denormalizado.
