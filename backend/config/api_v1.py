@@ -9,6 +9,9 @@ from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
 from apps.catalog.routes import register as register_catalog
+from apps.crm.routes import register as register_crm
+from apps.notifications.routes import register as register_notifications
+from apps.scheduling.routes import register as register_scheduling
 from apps.staff.routes import register as register_staff
 from apps.tenant.routes import register as register_tenant
 
@@ -16,6 +19,9 @@ router = DefaultRouter(trailing_slash=False)
 register_tenant(router)
 register_catalog(router)
 register_staff(router)
+register_crm(router)
+register_scheduling(router)
+register_notifications(router)
 
 urlpatterns = [
     path("auth/", include("apps.identity.urls")),
