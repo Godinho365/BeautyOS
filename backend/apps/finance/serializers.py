@@ -8,7 +8,7 @@ class TicketItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TicketItem
-        fields = ["id", "description", "service_id", "quantity", "unit_price_cents", "subtotal_cents"]
+        fields = ["id", "description", "service_id", "product_id", "quantity", "unit_price_cents", "subtotal_cents"]
         read_only_fields = ["id", "subtotal_cents"]
 
 
@@ -47,6 +47,7 @@ class AddItemSerializer(serializers.Serializer):
     unit_price_cents = serializers.IntegerField(min_value=0)
     quantity = serializers.IntegerField(min_value=1, default=1)
     service_id = serializers.UUIDField(required=False, allow_null=True)
+    product_id = serializers.UUIDField(required=False, allow_null=True)
 
 
 class RegisterPaymentSerializer(serializers.Serializer):

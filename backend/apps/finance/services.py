@@ -61,13 +61,15 @@ def open_ticket(*, tenant_id: uuid.UUID, customer_id: uuid.UUID, appointment_id:
 
 def add_item(
     *, tenant_id: uuid.UUID, ticket_id: uuid.UUID, description: str,
-    unit_price_cents: int, quantity: int = 1, service_id: uuid.UUID | None = None,
+    unit_price_cents: int, quantity: int = 1,
+    service_id: uuid.UUID | None = None, product_id: uuid.UUID | None = None,
 ) -> TicketItem:
     with transaction.atomic():
         ticket = _get_open_ticket(ticket_id)
         item = TicketItem.objects.create(
             tenant_id=tenant_id, ticket=ticket, description=description,
-            unit_price_cents=unit_price_cents, quantity=quantity, service_id=service_id,
+            unit_price_cents=unit_price_cents, quantity=quantity,
+            service_id=service_id, product_id=product_id,
         )
         _recompute_total(ticket)
     return item
