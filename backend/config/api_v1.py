@@ -34,5 +34,6 @@ register_notifications(router)
 urlpatterns = [
     path("auth/", include("apps.identity.urls")),
     path("ai/", include("apps.ai.urls")),
+    path("marketplace/", include("apps.marketplace.urls")),
     *router.urls,
 ]

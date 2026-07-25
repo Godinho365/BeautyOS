@@ -16,6 +16,12 @@ versionamento futuro seguirá [SemVer](https://semver.org/lang/pt-BR/).
 ## [Não lançado]
 
 ### Adicionado
+- **Módulo `marketplace` (Fase 4) — descoberta + agendamento público**: `MarketplaceProfile`
+  (tabela **global**, opt-in) com `slug` público. Endpoints **públicos sem JWT**:
+  `GET /api/v1/marketplace/companies` (empresas publicadas), `.../companies/{slug}` (perfil +
+  serviços) e `POST .../{slug}/book` (agendamento público). O tenant é identificado pelo `slug` e
+  o booking roda sob `use_tenant` (RLS + regra de não-sobreposição valem). Gestão do perfil em
+  `PUT /api/v1/marketplace/profile` (owner/manager). 4 testes. Ver [modules.md](docs/architecture/modules.md).
 - **Módulo `marketing` (Campanhas/Fidelidade)**: `Campaign` + `LoyaltyAccount` + `LoyaltyEntry`
   (RLS). **Consome `TicketClosed`** creditando pontos (1 ponto/real), idempotente. `TicketClosed`
   passa a ter **três consumidores** (estoque, comissões, fidelidade). Endpoints `/api/v1/campaigns`
