@@ -57,6 +57,11 @@ beleza**. Comece por aqui.
 | [Estratégia de Testes](testing/testing-strategy.md) | Pirâmide, cobertura, testes de contrato. |
 | [Deploy & DevOps](devops/deploy.md) | 12-Factor, ambientes, CI/CD, IaC. |
 
+### Frontend
+| Documento | Descrição |
+|---|---|
+| [Painel Web (Next.js)](frontend/overview.md) | App Next.js, login JWT, consumo da API. |
+
 ### Inteligência Artificial
 | Documento | Descrição |
 |---|---|

@@ -23,10 +23,15 @@ LINK_RE = re.compile(r"(?<!\!)\[[^\]]*\]\(([^)]+)\)")  # ignora imagens ![]()
 EXTERNAL = ("http://", "https://", "mailto:", "tel:")
 
 
+# Diretórios ignorados: controle de versão, dependências e artefatos de build.
+SKIP_DIRS = {".git", "node_modules", ".next", "out", "dist", ".venv", "venv",
+             "__pycache__", "staticfiles", ".pytest_cache", ".mypy_cache", ".ruff_cache"}
+
+
 def iter_markdown() -> list[str]:
     out: list[str] = []
     for dirpath, dirnames, filenames in os.walk(REPO):
-        dirnames[:] = [d for d in dirnames if d != ".git"]
+        dirnames[:] = [d for d in dirnames if d not in SKIP_DIRS]
         for fn in filenames:
             if fn.endswith(".md"):
                 out.append(os.path.join(dirpath, fn))

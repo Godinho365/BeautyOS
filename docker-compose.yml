@@ -67,5 +67,19 @@ services:
       redis:
         condition: service_healthy
 
+  # Painel web (Next.js). Se mudar FRONTEND_PORT, ajuste CORS_ALLOWED_ORIGINS no backend.
+  frontend:
+    build: ./frontend
+    command: npm run dev
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:${BACKEND_PORT:-8000}
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    depends_on:
+      - backend
+
 volumes:
   db_data:

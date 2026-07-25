@@ -16,6 +16,11 @@ versionamento futuro seguirá [SemVer](https://semver.org/lang/pt-BR/).
 ## [Não lançado]
 
 ### Adicionado
+- **Painel Web (Next.js)** em `frontend/`: app App Router + TypeScript com **login JWT** e
+  dashboard que consome `/api/v1` (lista serviços/agendamentos, cria serviço). Cliente HTTP
+  central (`lib/api.ts`) com Bearer + tratamento de 401. Backend ganha **CORS**
+  (`django-cors-headers`, `CORS_ALLOWED_ORIGINS`). Serviço `frontend` no `docker-compose`.
+  Build validado (`npm run build`). Ver [docs/frontend/overview.md](docs/frontend/overview.md).
 - **Relay assíncrono do Outbox via Celery** (quita a dívida do relay síncrono): `config/celery.py`,
   tarefa `apps.common.tasks.process_outbox` agendada pelo **Celery beat** (a cada 10s). Adiciona
   serviços `redis` e `worker` ao `docker-compose.yml`. O comando `process_outbox` permanece para
