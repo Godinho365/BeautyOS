@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('tenant_id', models.UUIDField(db_index=True, editable=False)),
-                ('customer_name', models.CharField(max_length=200)),
+                ('customer_id', models.UUIDField()),
                 ('professional_id', models.UUIDField()),
                 ('service_id', models.UUIDField()),
                 ('starts_at', models.DateTimeField()),

@@ -13,6 +13,8 @@ from datetime import datetime, timedelta
 from django.db import IntegrityError, transaction
 
 from apps.catalog.contracts import get_service
+from apps.common.outbox import record_event
+from apps.crm.contracts import customer_exists
 from apps.staff.contracts import professional_exists
 
 from .models import Appointment
@@ -33,7 +35,7 @@ class OverlapError(BookingError):
 def book_appointment(
     *,
     tenant_id: uuid.UUID,
-    customer_name: str,
+    customer_id: uuid.UUID,
     professional_id: uuid.UUID,
     service_id: uuid.UUID,
     starts_at: datetime,
@@ -43,6 +45,8 @@ def book_appointment(
         raise InvalidBookingError("Serviço inexistente ou inativo.")
     if not professional_exists(tenant_id, professional_id):
         raise InvalidBookingError("Profissional inexistente ou inativo.")
+    if not customer_exists(tenant_id, customer_id):
+        raise InvalidBookingError("Cliente inexistente.")
 
     ends_at = starts_at + timedelta(minutes=service.duration_minutes)
 
@@ -64,13 +68,26 @@ def book_appointment(
     # revertemos só o savepoint e devolvemos conflito, sem quebrar a transação da requisição.
     try:
         with transaction.atomic():
-            return Appointment.objects.create(
+            appointment = Appointment.objects.create(
                 tenant_id=tenant_id,
-                customer_name=customer_name,
+                customer_id=customer_id,
                 professional_id=professional_id,
                 service_id=service_id,
                 starts_at=starts_at,
                 ends_at=ends_at,
             )
+            # Outbox: evento gravado na MESMA transação do agendamento (ADR-0005).
+            record_event(
+                "AppointmentBooked",
+                {
+                    "appointment_id": str(appointment.id),
+                    "customer_id": str(customer_id),
+                    "professional_id": str(professional_id),
+                    "service_id": str(service_id),
+                    "starts_at": starts_at.isoformat(),
+                },
+                tenant_id=tenant_id,
+            )
+            return appointment
     except IntegrityError as exc:
         raise OverlapError("Conflito de horário detectado.") from exc

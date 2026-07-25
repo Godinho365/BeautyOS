@@ -21,9 +21,8 @@ class Appointment(TenantScopedModel):
         BOOKED = "booked", "Agendado"
         CANCELLED = "cancelled", "Cancelado"
 
-    # Cliente final: por ora denormalizado; evolui para FK ao módulo CRM (Customer).
-    customer_name = models.CharField(max_length=200)
     # Referências por ID a outros bounded contexts (sem FK — baixo acoplamento).
+    customer_id = models.UUIDField()
     professional_id = models.UUIDField()
     service_id = models.UUIDField()
     starts_at = models.DateTimeField()
@@ -35,4 +34,4 @@ class Appointment(TenantScopedModel):
         indexes = [models.Index(fields=["tenant_id", "professional_id", "starts_at"])]
 
     def __str__(self) -> str:
-        return f"{self.customer_name} @ {self.starts_at:%Y-%m-%d %H:%M}"
+        return f"Appointment {self.id} @ {self.starts_at:%Y-%m-%d %H:%M}"

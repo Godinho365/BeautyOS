@@ -16,6 +16,14 @@ versionamento futuro seguirá [SemVer](https://semver.org/lang/pt-BR/).
 ## [Não lançado]
 
 ### Adicionado
+- **Módulo `crm` (Clientes finais)**: entidade `Customer` isolada por tenant (RLS), endpoints
+  `/api/v1/customers`. O `Appointment` passa a referenciar `customer_id` real (via
+  `crm.contracts`), substituindo o `customer_name` denormalizado.
+- **Transactional Outbox + domain events** (ADR-0005): `OutboxEvent` + `record_event` +
+  relay `process_pending`/comando `process_outbox`; registro de handlers em `common/events.py`.
+  `book_appointment` emite `AppointmentBooked` na mesma transação.
+- **Módulo `notifications`**: `Notification` (RLS) + handler idempotente que cria a confirmação
+  ao consumir `AppointmentBooked`; endpoint `/api/v1/notifications`.
 - **Módulo `scheduling` (Agenda/Booking)**: entidade `Appointment` (referencia `Service`/
   `Professional` por ID). Primeira regra de negócio real — **não-sobreposição por profissional** —
   em duas camadas: use case `book_appointment` (Service Layer) + constraint `EXCLUDE` (btree_gist)
