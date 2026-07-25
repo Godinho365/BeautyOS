@@ -1,0 +1,52 @@
+# === Sistema operacional / editores ===
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# === Obsidian (config pessoal do Vault; não versionar) ===
+docs/.obsidian/
+.obsidian/
+
+# Vault Obsidian "starter" vazio criado por engano (contém só a nota de boas-vindas
+# padrão). Mantido em disco, mas fora do repo até definirmos onde o Vault deve apontar
+# (recomendação: abrir o Obsidian na raiz do repo ou em docs/). Ver README.md.
+BeautyOS/
+
+# === Python / Django (futuro backend) ===
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+*.sqlite3
+staticfiles/
+mediafiles/
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# === Node / Next.js (futuro frontend) ===
+node_modules/
+.next/
+out/
+dist/
+npm-debug.log*
+yarn-error.log*
+
+# === Flutter / Dart (futuro mobile) ===
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
+
+# === Docker / infra ===
+*.log
+docker-compose.override.yml

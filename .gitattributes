@@ -1,0 +1,10 @@
+# Normaliza finais de linha: LF no repositório, evita ruído entre Windows/Linux/macOS.
+* text=auto eol=lf
+
+# Binários (não normalizar)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
+*.ico binary
