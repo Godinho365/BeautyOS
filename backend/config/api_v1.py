@@ -13,6 +13,7 @@ from apps.commissions.routes import register as register_commissions
 from apps.crm.routes import register as register_crm
 from apps.finance.routes import register as register_finance
 from apps.inventory.routes import register as register_inventory
+from apps.marketing.routes import register as register_marketing
 from apps.notifications.routes import register as register_notifications
 from apps.scheduling.routes import register as register_scheduling
 from apps.staff.routes import register as register_staff
@@ -27,6 +28,7 @@ register_scheduling(router)
 register_finance(router)
 register_inventory(router)
 register_commissions(router)
+register_marketing(router)
 register_notifications(router)
 
 urlpatterns = [
