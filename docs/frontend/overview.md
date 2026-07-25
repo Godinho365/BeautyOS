@@ -32,10 +32,12 @@ consumidor real do contrato de API ([api_guidelines](../api/api_guidelines.md)).
 frontend/
   app/
     layout.tsx        # shell + estilos globais
-    page.tsx          # dashboard (serviços + agendamentos + novo serviço)
+    page.tsx          # dashboard (Copilot/insights + serviços)
+    agenda/page.tsx   # agenda: lista + form de agendamento
     login/page.tsx    # login JWT
+    components/Nav.tsx # navegação (Dashboard/Agenda/Sair)
   lib/
-    api.ts            # cliente HTTP (injeta Bearer, trata 401)
+    api.ts            # cliente HTTP (Bearer, 401, api.list desempacota paginação)
     auth.ts           # token no localStorage
 ```
 

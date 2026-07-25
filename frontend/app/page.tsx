@@ -3,33 +3,35 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
+import Nav from "@/app/components/Nav";
 import { api, ApiError } from "@/lib/api";
-import { clearToken, getToken } from "@/lib/auth";
+import { getToken } from "@/lib/auth";
 
 type Service = { id: string; name: string; duration_minutes: number; price_cents: number };
-type Appointment = { id: string; starts_at: string; status: string };
+type Insights = {
+  revenue_today_cents: number;
+  appointments_today: number;
+  low_stock_products: number;
+  customers_total: number;
+  suggestions: string[];
+};
 
 export default function DashboardPage() {
   const router = useRouter();
   const [services, setServices] = useState<Service[]>([]);
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [insights, setInsights] = useState<Insights | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
-
-  // formulário de novo serviço
-  const [name, setName] = useState("");
-  const [duration, setDuration] = useState(30);
-  const [price, setPrice] = useState(5000);
 
   const load = useCallback(async () => {
     setError("");
     try {
-      const [svc, appts] = await Promise.all([
+      const [svc, ins] = await Promise.all([
         api.list<Service>("/services"),
-        api.list<Appointment>("/appointments"),
+        api.get<Insights>("/ai/insights"),
       ]);
       setServices(svc);
-      setAppointments(appts);
+      setInsights(ins);
     } catch (err) {
       if (err instanceof ApiError && err.status === 401) {
         router.push("/login");
@@ -49,93 +51,41 @@ export default function DashboardPage() {
     void load();
   }, [router, load]);
 
-  async function createService(e: React.FormEvent) {
-    e.preventDefault();
-    try {
-      await api.post("/services", {
-        name,
-        duration_minutes: duration,
-        price_cents: price,
-      });
-      setName("");
-      await load();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Erro ao criar serviço.");
-    }
-  }
-
-  function logout() {
-    clearToken();
-    router.push("/login");
-  }
-
   if (loading) return <div className="container">Carregando…</div>;
 
   return (
     <div className="container">
-      <div className="topbar">
-        <h1>Painel BeautyOS</h1>
-        <button className="linkbtn" onClick={logout}>
-          Sair
-        </button>
-      </div>
+      <Nav />
+      <h1>Dashboard</h1>
       {error && <p className="error">{error}</p>}
 
-      <div className="row">
+      {insights && (
         <div className="card">
-          <h2>Serviços ({services.length})</h2>
+          <h2>Copilot — hoje</h2>
+          <div className="row">
+            <div className="card"><strong>R$ {(insights.revenue_today_cents / 100).toFixed(2)}</strong><br /><span className="muted">Receita</span></div>
+            <div className="card"><strong>{insights.appointments_today}</strong><br /><span className="muted">Agendamentos</span></div>
+            <div className="card"><strong>{insights.low_stock_products}</strong><br /><span className="muted">Estoque baixo</span></div>
+            <div className="card"><strong>{insights.customers_total}</strong><br /><span className="muted">Clientes</span></div>
+          </div>
           <ul>
-            {services.map((s) => (
-              <li key={s.id}>
-                {s.name} — {s.duration_minutes}min — R$ {(s.price_cents / 100).toFixed(2)}
-              </li>
+            {insights.suggestions.map((s, i) => (
+              <li key={i}>{s}</li>
             ))}
-            {services.length === 0 && <li className="muted">Nenhum serviço.</li>}
           </ul>
         </div>
-
-        <div className="card">
-          <h2>Agendamentos ({appointments.length})</h2>
-          <ul>
-            {appointments.map((a) => (
-              <li key={a.id}>
-                {new Date(a.starts_at).toLocaleString("pt-BR")} — {a.status}
-              </li>
-            ))}
-            {appointments.length === 0 && <li className="muted">Nenhum agendamento.</li>}
-          </ul>
-        </div>
-      </div>
+      )}
 
       <div className="card">
-        <h2>Novo serviço</h2>
-        <form onSubmit={createService}>
-          <label htmlFor="name">Nome</label>
-          <input id="name" value={name} onChange={(e) => setName(e.target.value)} required />
-          <div className="row">
-            <div style={{ flex: 1 }}>
-              <label htmlFor="dur">Duração (min)</label>
-              <input
-                id="dur"
-                type="number"
-                min={1}
-                value={duration}
-                onChange={(e) => setDuration(Number(e.target.value))}
-              />
-            </div>
-            <div style={{ flex: 1 }}>
-              <label htmlFor="price">Preço (centavos)</label>
-              <input
-                id="price"
-                type="number"
-                min={0}
-                value={price}
-                onChange={(e) => setPrice(Number(e.target.value))}
-              />
-            </div>
-          </div>
-          <button type="submit">Criar serviço</button>
-        </form>
+        <h2>Serviços ({services.length})</h2>
+        <ul>
+          {services.map((s) => (
+            <li key={s.id}>
+              {s.name} — {s.duration_minutes}min — R$ {(s.price_cents / 100).toFixed(2)}
+            </li>
+          ))}
+          {services.length === 0 && <li className="muted">Nenhum serviço.</li>}
+        </ul>
       </div>
     </div>
   );

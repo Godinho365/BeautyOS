@@ -16,6 +16,10 @@ versionamento futuro seguirá [SemVer](https://semver.org/lang/pt-BR/).
 ## [Não lançado]
 
 ### Adicionado
+- **Telas do painel web**: navegação (Dashboard/Agenda), **tela de Agenda** com formulário de
+  agendamento (cliente/profissional/serviço/horário → `POST /appointments`) e lista, e **card do
+  Copilot** no dashboard (`/ai/insights`). Verificado E2E no navegador (login → dashboard → agenda
+  → agendamento criado). Ver [docs/frontend/overview.md](docs/frontend/overview.md).
 - **Módulo `marketplace` (Fase 4) — descoberta + agendamento público**: `MarketplaceProfile`
   (tabela **global**, opt-in) com `slug` público. Endpoints **públicos sem JWT**:
   `GET /api/v1/marketplace/companies` (empresas publicadas), `.../companies/{slug}` (perfil +
