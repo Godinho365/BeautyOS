@@ -16,6 +16,10 @@ versionamento futuro seguirá [SemVer](https://semver.org/lang/pt-BR/).
 ## [Não lançado]
 
 ### Adicionado
+- **Relay assíncrono do Outbox via Celery** (quita a dívida do relay síncrono): `config/celery.py`,
+  tarefa `apps.common.tasks.process_outbox` agendada pelo **Celery beat** (a cada 10s). Adiciona
+  serviços `redis` e `worker` ao `docker-compose.yml`. O comando `process_outbox` permanece para
+  dev/CI. Ver [events.md](docs/architecture/events.md) e [deploy.md](docs/devops/deploy.md).
 - **Módulo `finance` (Comanda/Pagamento)**: `Ticket` + `TicketItem` + `Payment` (RLS).
   Use cases `open/add_item/register_payment/close_ticket` com invariantes reais (comanda
   fechada é imutável; só fecha com total > 0 e paga >= total). Emite `TicketClosed` via

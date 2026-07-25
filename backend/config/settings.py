@@ -93,6 +93,18 @@ SIMPLE_JWT = {
 }
 
 # --- Internacionalização ----------------------------------------------------
+# --- Celery (relay assíncrono do Outbox) -----------------------------------
+# Ver docs/architecture/events.md e docs/devops/deploy.md.
+CELERY_BROKER_URL = env("REDIS_URL", default="redis://localhost:6379/0")
+CELERY_TASK_ALWAYS_EAGER = env.bool("CELERY_TASK_ALWAYS_EAGER", default=False)
+CELERY_BEAT_SCHEDULE = {
+    "process-outbox": {
+        "task": "apps.common.tasks.process_outbox",
+        "schedule": 10.0,  # segundos
+    },
+}
+
+# --- Internacionalização ----------------------------------------------------
 LANGUAGE_CODE = "pt-br"
 TIME_ZONE = "America/Sao_Paulo"
 USE_I18N = True
