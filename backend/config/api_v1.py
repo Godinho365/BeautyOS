@@ -10,6 +10,7 @@ from rest_framework.routers import DefaultRouter
 
 from apps.catalog.routes import register as register_catalog
 from apps.crm.routes import register as register_crm
+from apps.finance.routes import register as register_finance
 from apps.notifications.routes import register as register_notifications
 from apps.scheduling.routes import register as register_scheduling
 from apps.staff.routes import register as register_staff
@@ -21,6 +22,7 @@ register_catalog(router)
 register_staff(router)
 register_crm(router)
 register_scheduling(router)
+register_finance(router)
 register_notifications(router)
 
 urlpatterns = [
