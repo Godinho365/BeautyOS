@@ -16,6 +16,11 @@ versionamento futuro seguirá [SemVer](https://semver.org/lang/pt-BR/).
 ## [Não lançado]
 
 ### Adicionado
+- **Módulo `scheduling` (Agenda/Booking)**: entidade `Appointment` (referencia `Service`/
+  `Professional` por ID). Primeira regra de negócio real — **não-sobreposição por profissional** —
+  em duas camadas: use case `book_appointment` (Service Layer) + constraint `EXCLUDE` (btree_gist)
+  no PostgreSQL. Endpoints `/api/v1/appointments`; 6 testes (incl. constraint do banco e
+  isolamento). Introduz o padrão `contracts.py` para dependência entre módulos sem acoplar ORM.
 - **Módulo `staff` (Profissionais)**: entidade `Professional` isolada por tenant (RLS), endpoints
   `/api/v1/professionals` (listar/criar/detalhar) e 3 testes de isolamento.
 - **Módulo `catalog` (Catálogo de Serviços)**: entidade `Service` (duração + preço em centavos)

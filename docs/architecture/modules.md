@@ -79,6 +79,9 @@ graph TB
 ## Boas práticas
 
 - Cada módulo expõe uma **API pública interna** (casos de uso) e mantém o resto privado.
+  Na implementação, essa API pública é realizada por um `contracts.py` (funções + DTOs simples);
+  outros módulos consomem os contratos, **nunca** o model ORM alheio. Ex.: `scheduling` valida
+  serviço/profissional via `catalog.contracts` e `staff.contracts`.
 - Comunicação entre módulos preferencialmente **assíncrona via eventos**.
 - Novos módulos entram primeiro aqui e no [ADR-0004](../decisions/0004-canonical-modules.md).
 

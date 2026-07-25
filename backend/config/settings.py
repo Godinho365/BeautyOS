@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "apps.identity",
     "apps.catalog",
     "apps.staff",
+    "apps.scheduling",
 ]
 
 MIDDLEWARE = [

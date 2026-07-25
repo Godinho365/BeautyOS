@@ -12,3 +12,6 @@ CREATE ROLE beautyos_app WITH LOGIN PASSWORD 'beautyos_app' NOSUPERUSER NOBYPASS
 -- Permite ao app criar/usar objetos no banco principal.
 GRANT CONNECT ON DATABASE beautyos TO beautyos_app;
 GRANT CREATE, USAGE ON SCHEMA public TO beautyos_app;
+-- Permite instalar extensões CONFIÁVEIS (ex.: btree_gist, usada pelo constraint de
+-- exclusão do módulo scheduling) sem ser superusuário. btree_gist é trusted no PG13+.
+GRANT CREATE ON DATABASE beautyos TO beautyos_app;
