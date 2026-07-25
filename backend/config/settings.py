@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "apps.commissions",
     "apps.marketing",
     "apps.ai",
+    "apps.marketplace",
     "apps.notifications",
 ]
 
