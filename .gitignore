@@ -9,9 +9,9 @@ Thumbs.db
 docs/.obsidian/
 .obsidian/
 
-# Vault Obsidian "starter" vazio criado por engano (contém só a nota de boas-vindas
-# padrão). Mantido em disco, mas fora do repo até definirmos onde o Vault deve apontar
-# (recomendação: abrir o Obsidian na raiz do repo ou em docs/). Ver README.md.
+# Vault Obsidian "starter" vazio (só a nota de boas-vindas padrão). O Vault oficial é a RAIZ
+# deste repositório — abra o Obsidian com "Open folder as vault" na raiz. Pode apagar esta
+# pasta local com segurança. Ver docs/CONTRIBUTING-DOCS.md (seção "MOCs e Obsidian").
 BeautyOS/
 
 # === Python / Django (futuro backend) ===

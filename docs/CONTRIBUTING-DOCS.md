@@ -116,6 +116,9 @@ O Vault ([`docs/`](README.md)) é compatível com Obsidian. Recomendações:
 - **Links & backlinks:** use links Markdown relativos (portáveis e validáveis em CI); o Obsidian
   gera os backlinks automaticamente a partir deles.
 - **Callouts:** `> [!note] > [!warning] > [!danger] > [!tip]` para destacar contexto.
+- **Abrir o Vault:** no Obsidian, use *"Open folder as vault"* apontando para a **raiz do
+  repositório** (não uma subpasta) — assim o cofre enxerga `CLAUDE.md`, `docs/`, os MOCs, ADRs e
+  os backlinks. A pasta `.obsidian/` gerada é pessoal e fica fora do Git (`.gitignore`).
 
 ## Boas práticas
 
