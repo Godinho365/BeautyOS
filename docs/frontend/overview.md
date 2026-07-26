@@ -34,8 +34,9 @@ frontend/
     layout.tsx        # shell + estilos globais
     page.tsx          # dashboard (Copilot/insights + serviços)
     agenda/page.tsx   # agenda: lista + form de agendamento
+    comandas/page.tsx # comandas: abrir, itens, pagamento, fechar
     login/page.tsx    # login JWT
-    components/Nav.tsx # navegação (Dashboard/Agenda/Sair)
+    components/Nav.tsx # navegação (Dashboard/Agenda/Comandas/Sair)
   lib/
     api.ts            # cliente HTTP (Bearer, 401, api.list desempacota paginação)
     auth.ts           # token no localStorage

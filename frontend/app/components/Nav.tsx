@@ -8,6 +8,7 @@ import { clearToken } from "@/lib/auth";
 const LINKS = [
   { href: "/", label: "Dashboard" },
   { href: "/agenda", label: "Agenda" },
+  { href: "/comandas", label: "Comandas" },
 ];
 
 export default function Nav() {
