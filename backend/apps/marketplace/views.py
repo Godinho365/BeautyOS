@@ -14,6 +14,7 @@ from rest_framework.views import APIView
 from apps.catalog.contracts import list_active_services
 from apps.common.permissions import RoleBasedPermission
 from apps.common.tenant_context import get_current_tenant, use_tenant
+from apps.staff.contracts import list_professionals
 from apps.scheduling.services import InvalidBookingError, OverlapError
 
 from .models import MarketplaceProfile
@@ -63,9 +64,10 @@ class PublicCompanyDetailView(APIView):
         if profile is None:
             return Response({"detail": "Empresa não encontrada."}, status=status.HTTP_404_NOT_FOUND)
         data = ProfileSerializer(profile).data
-        # RLS: precisa do contexto do tenant para ler os serviços da Empresa.
+        # RLS: precisa do contexto do tenant para ler serviços/profissionais da Empresa.
         with use_tenant(profile.company_id):
             data["services"] = list_active_services(profile.company_id)
+            data["professionals"] = list_professionals(profile.company_id)
         return Response(data)
 
 

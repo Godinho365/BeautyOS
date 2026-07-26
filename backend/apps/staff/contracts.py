@@ -17,3 +17,11 @@ def professional_exists(tenant_id: uuid.UUID, professional_id: uuid.UUID) -> boo
         .filter(tenant_id=tenant_id, id=professional_id, is_active=True)
         .exists()
     )
+
+
+def list_professionals(tenant_id: uuid.UUID) -> list[dict]:
+    """Profissionais ativos do tenant (para exibição pública no marketplace)."""
+    return [
+        {"id": str(p.id), "name": p.name, "specialty": p.specialty}
+        for p in Professional.all_tenants.filter(tenant_id=tenant_id, is_active=True).order_by("name")
+    ]

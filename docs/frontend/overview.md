@@ -35,8 +35,12 @@ frontend/
     page.tsx          # dashboard (Copilot/insights + serviços)
     agenda/page.tsx   # agenda: lista + form de agendamento
     comandas/page.tsx # comandas: abrir, itens, pagamento, fechar
+    estoque/page.tsx  # produtos + ajuste de saldo
+    marketplace/page.tsx        # gestão do perfil público (publicar)
+    descobrir/page.tsx          # PÚBLICO: lista de salões
+    descobrir/[slug]/page.tsx   # PÚBLICO: perfil + agendamento
     login/page.tsx    # login JWT
-    components/Nav.tsx # navegação (Dashboard/Agenda/Comandas/Sair)
+    components/Nav.tsx # navegação (Dashboard/Agenda/Comandas/Estoque/Marketplace/Sair)
   lib/
     api.ts            # cliente HTTP (Bearer, 401, api.list desempacota paginação)
     auth.ts           # token no localStorage
