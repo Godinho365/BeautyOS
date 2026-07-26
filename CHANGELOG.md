@@ -16,6 +16,23 @@ versionamento futuro seguirá [SemVer](https://semver.org/lang/pt-BR/).
 ## [Não lançado]
 
 ### Adicionado
+- **Telas do painel web**: navegação (Dashboard/Agenda/Comandas/Estoque/Marketplace), **Agenda**
+  (agendamento), **Comandas** (abrir→itens→pagamento→fechar), **Estoque** (produtos + ajuste de
+  saldo), **Marketplace** (gestão do perfil público) e **card do Copilot** no dashboard. **Páginas
+  públicas** `/descobrir` e `/descobrir/[slug]` (descoberta + agendamento público, sem login).
+  Fluxo login→dashboard→agenda→agendamento verificado E2E no navegador; demais telas com build
+  validado. Backend: `staff.contracts.list_professionals` exposto no detalhe público.
+  Ver [docs/frontend/overview.md](docs/frontend/overview.md).
+- **Módulo `marketplace` (Fase 4) — descoberta + agendamento público**: `MarketplaceProfile`
+  (tabela **global**, opt-in) com `slug` público. Endpoints **públicos sem JWT**:
+  `GET /api/v1/marketplace/companies` (empresas publicadas), `.../companies/{slug}` (perfil +
+  serviços) e `POST .../{slug}/book` (agendamento público). O tenant é identificado pelo `slug` e
+  o booking roda sob `use_tenant` (RLS + regra de não-sobreposição valem). Gestão do perfil em
+  `PUT /api/v1/marketplace/profile` (owner/manager). 4 testes. Ver [modules.md](docs/architecture/modules.md).
+- **Módulo `marketing` (Campanhas/Fidelidade)**: `Campaign` + `LoyaltyAccount` + `LoyaltyEntry`
+  (RLS). **Consome `TicketClosed`** creditando pontos (1 ponto/real), idempotente. `TicketClosed`
+  passa a ter **três consumidores** (estoque, comissões, fidelidade). Endpoints `/api/v1/campaigns`
+  e `/api/v1/loyalty-accounts` (leitura restrita a gestão via RBAC).
 - **Módulo `ai` (Copilot) — Fase 3**: `GET /api/v1/ai/insights` agrega dados de `finance`,
   `scheduling`, `inventory` e `crm` (via contratos públicos) e devolve métricas do dia +
   sugestões **determinísticas** (baseline sem LLM, ancorado nos dados = guardrail). Restrito a

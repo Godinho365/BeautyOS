@@ -88,8 +88,9 @@ O Outbox está implementado e **testado** (booking → outbox → relay → noti
   `finance.services.close_ticket` grava `TicketClosed` (consumidores futuros: estoque, comissões).
 - Consumidores: `notifications.handlers.on_appointment_booked` (confirma agendamento);
   `inventory.handlers.on_ticket_closed` (baixa estoque dos produtos vendidos);
-  `commissions.handlers.on_ticket_closed` (gera comissão do profissional) — todos idempotentes
-  por `event_id`. `TicketClosed` tem **dois consumidores**, demonstrando fan-out do evento.
+  `commissions.handlers.on_ticket_closed` (gera comissão do profissional);
+  `marketing.handlers.on_ticket_closed` (credita pontos de fidelidade) — todos idempotentes
+  por `event_id`. `TicketClosed` tem **três consumidores**, demonstrando fan-out do evento.
 
 ## Boas práticas
 
